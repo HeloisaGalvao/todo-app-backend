@@ -156,21 +156,27 @@ describe('TodoService', () => {
       expect(todoRepository.findOneBy).toHaveBeenCalledTimes(1);
       expect(todoRepository.softDelete).toHaveBeenCalledTimes(1);
     });
-  });
 
-  it('should throw a not found exception', () => {
-    const data: UpdateTodoDto = {
-      task: 'task-1',
-      isDone: 1,
-    };
-    jest.spyOn(todoRepository, 'findOneBy').mockRejectedValueOnce(new Error());
+    it('should throw a not found exception', () => {
+      const data: UpdateTodoDto = {
+        task: 'task-1',
+        isDone: 1,
+      };
+      jest
+        .spyOn(todoRepository, 'findOneBy')
+        .mockRejectedValueOnce(new Error());
 
-    expect(todoService.deleteById('1')).rejects.toThrowError(NotFoundException);
-  });
+      expect(todoService.deleteById('1')).rejects.toThrowError(
+        NotFoundException,
+      );
+    });
 
-  it('should throw an exception', () => {
-    jest.spyOn(todoRepository, 'softDelete').mockRejectedValueOnce(new Error());
+    it('should throw an exception', () => {
+      jest
+        .spyOn(todoRepository, 'softDelete')
+        .mockRejectedValueOnce(new Error());
 
-    expect(todoService.deleteById('1')).rejects.toThrowError();
+      expect(todoService.deleteById('1')).rejects.toThrowError();
+    });
   });
 });
